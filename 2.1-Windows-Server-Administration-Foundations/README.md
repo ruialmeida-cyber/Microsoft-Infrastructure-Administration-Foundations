@@ -8,43 +8,42 @@
 
 **Technology:** Microsoft Windows Server 2025
 
-**Domain:** Microsoft Infrastructure Administration | Identity Foundations
+**Domain:** Microsoft Infrastructure Administration
 
 
 ---
 
 # Overview
 
-This laboratory establishes the foundation for Microsoft infrastructure administration by deploying and validating a Windows Server 2025 environment.
+This laboratory establishes the infrastructure foundation for the Microsoft Infrastructure Administration phase.
 
-Following the completion of identity-focused laboratories in Microsoft Entra ID, this phase expands into the infrastructure layer that supports modern Microsoft enterprise environments.
+Following the completion of identity-focused laboratories in Microsoft Entra ID, this phase expands into the underlying systems that support modern Microsoft enterprise environments.
 
-The objective was not simply to install Windows Server, but to create a reliable administration platform for future laboratories covering:
+The objective of this laboratory was to deploy, configure, and validate a Windows Server 2025 environment that can be used for future administration exercises involving:
 
-- Windows Server administration
 - Active Directory Domain Services
+- Group Policy
 - PowerShell administration
-- Security configuration
+- Windows security
 - Enterprise troubleshooting
 
-Modern Microsoft environments depend on the interaction between infrastructure, identity, and security.
 
-A strong understanding of Windows Server administration provides the foundation required for effective identity and cloud administration.
+Understanding Windows Server administration provides the foundation required for effective identity, hybrid infrastructure, and cloud administration.
 
 
 ---
 
 # Objective
 
-The objectives of this laboratory were to:
+The objectives of this laboratory were:
 
-- Deploy a Windows Server 2025 environment
-- Validate the server installation
-- Confirm operating system configuration
+- Deploy a Windows Server 2025 virtual machine
+- Confirm successful operating system installation
+- Validate server identity
 - Verify administrative access
-- Validate network connectivity
+- Validate network configuration
+- Confirm external connectivity
 - Establish a documented server baseline
-- Prepare the environment for future infrastructure administration exercises
 
 
 ---
@@ -55,10 +54,10 @@ The objectives of this laboratory were to:
 
 | Component | Configuration |
 |---|---|
-| Platform | Oracle VirtualBox |
+| Virtualisation Platform | Oracle VirtualBox |
 | Host Operating System | Windows 11 |
 | Guest Operating System | Windows Server 2025 Standard Evaluation |
-| Administration Method | PowerShell and Windows Server GUI |
+| Administration Tool | PowerShell |
 
 
 ## Server Configuration
@@ -67,9 +66,9 @@ The objectives of this laboratory were to:
 |---|---|
 | Computer Name | WIN-URRN4NJRE9I |
 | Operating System | Windows Server 2025 Standard Evaluation |
-| OS Build | 26100 |
+| Operating System Build | 26100 |
 | IPv4 Address | 10.0.2.15 |
-| Network Mode | VirtualBox NAT |
+| Network Configuration | VirtualBox NAT |
 
 
 ---
@@ -80,28 +79,34 @@ The objectives of this laboratory were to:
 
 Windows Server 2025 Standard Evaluation was deployed within Oracle VirtualBox.
 
-The environment was configured with:
+The environment was configured as a reusable Microsoft administration laboratory platform.
 
-- Desktop Experience
-- Local Administrator access
-- Network connectivity
-- PowerShell administration capability
+Initial configuration included:
 
-The completed installation provides the foundation for future Microsoft infrastructure laboratories.
+- Windows Server installation
+- Local administrator access
+- Network configuration
+- PowerShell availability
 
 
 ---
 
 # Validation
 
-Validation was performed using PowerShell commands to confirm the operational state of the server.
+Validation was performed using PowerShell commands to confirm the server baseline configuration.
 
-The purpose of validation was to establish a reliable baseline before introducing additional infrastructure services.
+The validation process focused on confirming:
+
+- System identity
+- Operating system state
+- Network configuration
+- Connectivity
+- Administrative context
 
 
 ---
 
-# Server Identity Validation
+## Server Identity Validation
 
 Command:
 
@@ -112,9 +117,9 @@ Result:
 
 WIN-URRN4NJRE9I
 
-Validation purpose:
+Purpose:
 
-Confirmed the unique identity of the Windows Server instance.
+Confirmed the server hostname and system identity.
 
 Operating System Validation
 
@@ -133,9 +138,9 @@ WindowsVersion:
 OsBuildNumber:
 26100
 
-Validation purpose:
+Purpose:
 
-Confirmed the expected Windows Server version and build.
+Confirmed the installed Windows Server edition and operating system build.
 
 Network Configuration Validation
 
@@ -143,7 +148,7 @@ Command:
 
 ipconfig
 
-Validated:
+Validated configuration:
 
 IPv4 Address:
 10.0.2.15
@@ -151,11 +156,11 @@ IPv4 Address:
 Default Gateway:
 10.0.2.2
 
-Validation purpose:
+Purpose:
 
-Confirmed network adapter configuration and communication settings.
+Confirmed network adapter configuration and VirtualBox NAT connectivity.
 
-Connectivity Validation
+External Connectivity Validation
 
 Command:
 
@@ -165,13 +170,13 @@ Result:
 
 PingSucceeded : True
 
-Validation purpose:
+Purpose:
 
 Confirmed:
 
+Network connectivity
 DNS resolution
-External connectivity
-Functional network communication
+External communication capability
 Administrative Identity Validation
 
 Command:
@@ -182,77 +187,65 @@ Result:
 
 WIN-URRN4NJRE9I\administrator
 
-Validation purpose:
+Purpose:
 
 Confirmed the active administrative security context.
 
-System Time Validation
+System Date Validation
 
 Command:
 
 Get-Date
 
-Validation purpose:
+Purpose:
 
 Confirmed system date and time configuration.
 
 Evidence
 
-Evidence collected during this laboratory consists exclusively of PowerShell validation outputs.
+All laboratory evidence was collected using PowerShell output.
 
 No screenshot evidence was collected.
 
-PowerShell Validation Evidence
+Evidence structure:
 
-Location:
+Evidence
+│
+└── PowerShell
+    │
+    ├── hostname.txt
+    ├── computerinfo.txt
+    ├── ipconfig.txt
+    ├── test-networkconnection.txt
+    ├── whoami.txt
+    └── get-date.txt
 
-Evidence/PowerShell/
-
-Collected evidence:
-
-hostname.txt
-
-computerinfo.txt
-
-ipconfig.txt
-
-test-networkconnection.txt
-
-whoami.txt
-
-get-date.txt
-
-These artefacts provide a reproducible record of:
+The collected evidence provides a reproducible baseline of:
 
 Server identity
-Operating system state
+Operating system information
 Network configuration
 Connectivity status
-Administrative identity
-System configuration baseline
+Administrative access
+System configuration state
 Troubleshooting
 
-During initial laboratory operation, VirtualBox interaction required adjustment.
+During laboratory operation, VirtualBox interaction required adjustment.
 
-Areas investigated:
+Investigated areas included:
 
-Virtual machine display behaviour
+Virtual machine input behaviour
 Keyboard capture
 Host and guest workflow
-Efficient evidence collection
+Efficient administration workflow
 
-Resolution:
+The final approach used a practical VirtualBox configuration that allowed continued administration, evidence collection, and documentation.
 
-The laboratory workflow continued using a practical windowed environment, allowing effective interaction between:
-
-Windows 11 host system
-Windows Server virtual machine
-Documentation workflow
 Operational Interpretation
 
-This laboratory demonstrates that infrastructure validation is a prerequisite for enterprise identity services.
+This laboratory demonstrates the relationship between infrastructure and identity.
 
-The Microsoft enterprise stack can be represented as:
+Modern Microsoft environments depend on a layered architecture:
 
 Windows Server
 
@@ -268,29 +261,31 @@ Microsoft Entra ID
 
 Identity Security
 
-Before implementing advanced identity services, administrators must establish:
+Reliable identity services require reliable infrastructure foundations.
 
-Reliable infrastructure
-Correct system identity
-Valid administrative access
-Functional networking
-Documented configuration state
+Before implementing additional enterprise services, administrators must validate:
+
+System configuration
+Administrative access
+Network functionality
+Operating system state
+Baseline documentation
 Lessons Learned
 
-This laboratory reinforced several important administration principles:
+This laboratory reinforced the importance of:
 
-Infrastructure must be validated before additional services are deployed
-PowerShell provides efficient administrative visibility
-Evidence collection improves troubleshooting accuracy
-Identity services depend on reliable infrastructure foundations
+Validating infrastructure before deploying additional services
+Using PowerShell for efficient administration
+Maintaining evidence-based troubleshooting practices
+Documenting system baselines before configuration changes
 Skills Demonstrated
 Windows Server deployment
 Windows administration fundamentals
-PowerShell-based validation
+PowerShell system validation
 Network troubleshooting
 Administrative identity verification
 Infrastructure documentation
-Evidence-based troubleshooting
+Evidence collection methodology
 Repository Context
 
 This laboratory is part of:
@@ -313,7 +308,7 @@ Learning progression:
 
 2.4 Windows Server Security Fundamentals
 
-This phase develops the infrastructure knowledge required for:
+This phase develops the infrastructure foundation required for:
 
 Active Directory administration
 Hybrid identity
