@@ -581,3 +581,242 @@ Recent system events primarily recorded normal service state changes.
 Reviewing these events helps administrators understand normal operating system behaviour and establish a baseline for future troubleshooting and security monitoring.
 
 ---
+
+
+# Review System Errors
+
+## Command
+
+```powershell
+Get-EventLog -LogName System -EntryType Error -Newest 5
+```
+
+## Output
+
+```text
+Index  Time         EntryType  Source      Message
+-----  -----------  ---------  ----------  -----------------------------------------
+1731   26 Jul 2026  Error      EventLog    The previous system shutdown was unexpected.
+1042   23 Jul 2026  Error      DCOM        Event ID 10005.
+679    23 Jul 2026  Error      EventLog    The previous system shutdown was unexpected.
+532    14 Jul 2026  Error      EventLog    The previous system shutdown was unexpected.
+209    14 Jul 2026  Error      Service Control Manager
+```
+
+## Interpretation
+
+The System log contained several historical error events.
+
+Most entries related to previous unexpected shutdowns rather than active system faults.
+
+Reviewing historical errors establishes a baseline for future troubleshooting and security investigations.
+
+---
+
+# Storage Validation
+
+## Review Disk Configuration
+
+### Command
+
+```powershell
+Get-Disk
+```
+
+### Output
+
+```text
+Number Friendly Name  HealthStatus OperationalStatus Total Size Partition Style
+------ -------------  ------------ ----------------- ---------- ---------------
+0      VBOX HARDDISK Healthy      Online             80 GB      MBR
+```
+
+### Interpretation
+
+The virtual disk was confirmed to be healthy and online.
+
+Storage validation is an important administrative task before deploying additional server roles or enterprise services.
+
+---
+
+# Windows Firewall Validation
+
+## Review Firewall Profiles
+
+### Command
+
+```powershell
+Get-NetFirewallProfile
+```
+
+### Output
+
+```text
+Name      Enabled
+----      -------
+Domain    True
+Private   True
+Public    True
+```
+
+### Interpretation
+
+All three Windows Firewall profiles are enabled.
+
+Although the server is currently operating in a WORKGROUP environment, maintaining enabled firewall profiles reduces the attack surface and provides a secure default configuration.
+
+---
+
+# Evidence Collection
+
+Evidence collected during this laboratory consists exclusively of PowerShell outputs.
+
+Repository structure:
+
+```text
+Evidence/
+└── PowerShell/
+    ├── computerinfo.txt
+    ├── processes.txt
+    ├── explorer.txt
+    ├── explorer-user.txt
+    ├── eventlog-service.txt
+    ├── services.txt
+    ├── network-config.txt
+    ├── network-test.txt
+    ├── execution-policy.txt
+    ├── winrm.txt
+    ├── local-users.txt
+    ├── local-groups.txt
+    ├── windows-features.txt
+    ├── event-system.txt
+    ├── event-errors.txt
+    ├── disk.txt
+    └── firewall-profile.txt
+```
+
+The collected evidence provides a reproducible record of the server's administrative state before introducing enterprise infrastructure roles.
+
+---
+
+# Technical Findings
+
+The Windows Server 2025 environment was successfully validated for routine administrative operations.
+
+The laboratory confirmed:
+
+- Correct server identity
+- Operating system configuration
+- Process visibility through PowerShell
+- Windows service operation
+- Functional network configuration
+- Internet connectivity
+- Secure PowerShell execution policy
+- Operational WinRM service
+- Local user and group configuration
+- Availability of Windows Server roles
+- Event logging functionality
+- Healthy virtual storage
+- Enabled Windows Firewall profiles
+
+The server remains in a standalone WORKGROUP configuration and is ready for future Active Directory deployment.
+
+---
+
+# Security Relevance
+
+Although this laboratory focused on Windows administration, each activity has direct relevance to enterprise security.
+
+### Identity
+
+Local users and security groups define access boundaries and administrative privileges before domain services are introduced.
+
+### Monitoring
+
+Windows Event Logs provide the telemetry consumed by SIEM platforms and Detection Engineering workflows.
+
+### Administration
+
+PowerShell provides a repeatable, auditable and scalable approach to enterprise system management.
+
+### Hardening
+
+Reviewing services, firewall profiles and installed features helps administrators reduce unnecessary attack surface before production deployment.
+
+---
+
+# Key Learning Outcomes
+
+This laboratory reinforced the importance of understanding the Windows Server operating system before deploying enterprise infrastructure services.
+
+Key concepts developed include:
+
+- Windows Server administration
+- PowerShell-based administration
+- Process and service management
+- Local identity management
+- Network validation
+- Event log analysis
+- Windows feature inspection
+- Firewall configuration
+- Evidence-based administration
+
+---
+
+# Skills Demonstrated
+
+- Windows Server administration
+- PowerShell administration
+- Process analysis
+- Service management
+- Network troubleshooting
+- Remote management validation
+- Local identity administration
+- Windows feature inspection
+- Event log analysis
+- Firewall validation
+- Infrastructure documentation
+- Evidence collection
+
+---
+
+# Repository Context
+
+This laboratory is part of:
+
+**Phase 2 — Microsoft Infrastructure Administration Foundations**
+
+Learning progression:
+
+```text
+2.1 Windows Server Administration Foundations
+        ↓
+2.2 Windows Server Administration Fundamentals
+        ↓
+2.3 Active Directory Administration Fundamentals
+        ↓
+2.4 PowerShell Administration
+        ↓
+2.5 Windows Server Security Fundamentals
+```
+
+This phase develops the infrastructure knowledge required for:
+
+- Active Directory administration
+- Hybrid identity
+- Microsoft Entra ID integration
+- Microsoft 365 administration
+- Azure administration
+- Identity security
+- Detection engineering
+- Cloud security operations
+
+---
+
+# Conclusion
+
+This laboratory established practical Windows Server administration skills through structured PowerShell-based system validation.
+
+The environment was verified as operational, securely configured and ready for the introduction of Active Directory Domain Services in the next laboratory.
+
+Completing this stage provides the administrative foundation required for enterprise identity management, Windows security and cloud-integrated Microsoft environments.
