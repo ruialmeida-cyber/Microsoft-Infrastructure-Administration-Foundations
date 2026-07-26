@@ -14,11 +14,11 @@
 
 # Overview
 
-This laboratory develops practical Windows Server administration skills following the successful completion of Lab 2.1 — Windows Server Administration Foundations.
+This laboratory develops practical Windows Server administration skills following the completion of Lab 2.1 — Windows Server Administration Foundations.
 
-The objective was to validate and explore the Windows Server operating system layer that supports enterprise identity services, administration, and security operations.
+The objective was to validate and explore the Windows Server operating system layer that supports enterprise identity, administration, and security operations.
 
-This laboratory focused on:
+The laboratory focused on:
 
 - PowerShell administration
 - System information retrieval
@@ -26,14 +26,14 @@ This laboratory focused on:
 - Service management
 - Event log analysis
 - Network validation
-- Local account and group management
+- Local user and group management
 - Firewall configuration review
 
-The knowledge developed in this laboratory provides the operational foundation required for future implementation of:
+This laboratory establishes the operational foundation required before introducing:
 
 - Active Directory Domain Services
 - Group Policy
-- Identity management
+- Enterprise identity management
 - Security monitoring
 - Microsoft Entra hybrid identity
 
@@ -43,14 +43,14 @@ The knowledge developed in this laboratory provides the operational foundation r
 
 The objectives of this laboratory were:
 
-- Develop familiarity with Windows Server administration through PowerShell
-- Validate system configuration
-- Analyse running processes and services
-- Understand local identity management
-- Review Windows event logging
+- Develop practical Windows Server administration skills using PowerShell
+- Validate Windows Server configuration
+- Understand running processes and services
+- Review local identity management
+- Analyse Windows event logs
 - Validate network configuration
-- Review Windows Firewall security profiles
-- Collect reproducible administrative evidence
+- Review firewall security settings
+- Collect evidence for technical documentation
 
 ---
 
@@ -81,22 +81,44 @@ The objectives of this laboratory were:
 
 ---
 
-# Methodology
+# Implementation
 
-The laboratory followed an evidence-based administration methodology.
+The Windows Server 2025 environment created during Lab 2.1 was used as the foundation for administration exercises.
 
-Each administrative task was performed using:
+The laboratory continued with PowerShell-based validation and administration tasks.
 
-- PowerShell commands
-- Validation of output
-- Evidence collection
-- Security interpretation
+Activities performed:
 
-The objective was not only command execution but understanding how Windows Server administrators validate, monitor, and troubleshoot systems.
+- Retrieved system information
+- Validated running processes
+- Identified process ownership
+- Checked Windows services
+- Analysed event logs
+- Reviewed local users and groups
+- Confirmed network connectivity
+- Reviewed firewall configuration
 
 ---
 
-# Phase 1 — PowerShell Administration
+# Validation Methodology
+
+PowerShell was used as the primary administration and validation interface.
+
+The objective was to understand how Windows Server administrators retrieve system information, troubleshoot issues, and verify operational status.
+
+Validation focused on:
+
+- Server identity
+- Operating system state
+- Administrative context
+- Service availability
+- Network connectivity
+- Local identity configuration
+- Security controls
+
+---
+
+# PowerShell Administration Validation
 
 ## System Information Validation
 
@@ -104,22 +126,16 @@ The objective was not only command execution but understanding how Windows Serve
 
 ```powershell
 Get-ComputerInfo | Select-Object CsName, WindowsProductName, OsBuildNumber, CsDomain
-
 Output
-CsName          : WIN-URRN4NJRE9I
-WindowsProductName : Windows Server 2025 Standard Evaluation
-OsBuildNumber   : 26100
-CsDomain        : WORKGROUP
+CsName              : WIN-URRN4NJRE9I
+WindowsProductName  : Windows Server 2025 Standard Evaluation
+OsBuildNumber       : 26100
+CsDomain            : WORKGROUP
 Interpretation
 
-The command confirmed:
+The server identity and operating system configuration were successfully validated.
 
-Correct server identity
-Operating system version
-Build number
-Current domain membership status
-
-The server remains in a standalone WORKGROUP configuration, which is expected before Active Directory deployment.
+The server remains a standalone WORKGROUP machine, which is expected before Active Directory deployment.
 
 Process Management
 Retrieve Running Processes
@@ -137,26 +153,14 @@ dwm
 explorer
 Interpretation
 
-The output demonstrated:
+The command demonstrated process enumeration and provided visibility into active system processes.
 
-Active Windows processes
-Resource utilisation visibility
-Process enumeration capability
+Process analysis is important for:
 
-Process inspection is an important administrative and security skill for identifying abnormal activity.
-
-Validate Explorer Process
-Command
-Get-Process -Name explorer
-Output
-ProcessName
------------
-explorer
-Interpretation
-
-The command confirmed that the Windows graphical shell process was running correctly.
-
-Identify Process Owner
+Troubleshooting
+Performance analysis
+Security investigations
+Process Ownership Validation
 Command
 Get-Process -Name explorer -IncludeUserName
 Output
@@ -165,15 +169,12 @@ UserName
 WIN-URRN4NJRE9I\Administrator
 Interpretation
 
-The process ownership validation confirmed the administrative context.
+The process owner was confirmed as the local Administrator account.
 
-Understanding process ownership is relevant for:
+Understanding process ownership supports privilege analysis and incident investigation.
 
-Privilege analysis
-Security investigations
-Threat detection
 Service Management
-Validate Windows Event Log Service
+Windows Event Log Service Validation
 Command
 Get-Service -Name EventLog
 Output
@@ -182,16 +183,19 @@ Status   Name      DisplayName
 Running  EventLog  Windows Event Log
 Interpretation
 
-The Windows Event Log service was confirmed operational.
+The Windows Event Log service was operational.
 
-This service is critical because security monitoring depends on reliable event collection.
+Reliable event logging is essential for:
 
-Review Running Services
+Security monitoring
+SIEM ingestion
+Detection engineering
+Running Services Review
 Command
 Get-Service | Where-Object {$_.Status -eq "Running"} | Select-Object -First 10
 Output
 Status   Name
-------   ----
+
 Running  Appinfo
 Running  AppReadiness
 Running  AudioEndpointBuilder
@@ -206,11 +210,11 @@ The command provided visibility into active Windows services.
 
 Service management is important for:
 
-System troubleshooting
-Security hardening
-Identifying unnecessary services
+System reliability
+Troubleshooting
+Attack surface reduction
 Network Validation
-Review Network Configuration
+Network Configuration
 Command
 Get-NetIPConfiguration
 Output
@@ -220,18 +224,18 @@ IPv4Address : 10.0.2.15
 
 IPv4DefaultGateway : 10.0.2.2
 
-DNSServer :
+DNS Servers:
 1.1.1.1
 8.8.8.8
 Interpretation
 
-The server network configuration was validated successfully.
+Network configuration was successfully validated.
 
-The results confirmed:
+The server has:
 
 Correct IP addressing
-Gateway availability
-DNS configuration
+Valid gateway configuration
+Working DNS configuration
 Connectivity Test
 Command
 Test-NetConnection 8.8.8.8
@@ -240,13 +244,12 @@ ComputerName : 8.8.8.8
 
 PingSucceeded : True
 
-PingReplyDetails :
-16 ms
+PingReplyDetails : 16 ms
 Interpretation
 
 External network connectivity was confirmed.
 
-PowerShell Security Validation
+PowerShell Security Configuration
 Execution Policy Review
 Command
 Get-ExecutionPolicy -List
@@ -260,10 +263,10 @@ Interpretation
 
 The server uses the RemoteSigned execution policy.
 
-This provides a balance between administrative flexibility and script security.
+This allows administrative scripting while providing protection against unsigned remote scripts.
 
 Remote Administration Validation
-WinRM Service Check
+WinRM Service
 Command
 Get-Service WinRM
 Output
@@ -274,15 +277,13 @@ Interpretation
 
 Windows Remote Management is operational.
 
-WinRM enables remote administration and is commonly used in enterprise environments.
+WinRM enables remote administration in enterprise environments.
 
-Local Identity Management
-Review Local Users
+Local Users and Groups
+Local Users
 Command
 Get-LocalUser
 Output
-Name
-----
 Administrator
 DefaultAccount
 Guest
@@ -291,47 +292,41 @@ Interpretation
 
 The server contains default local accounts.
 
-The Administrator account is enabled and provides administrative access.
+Local account management is a foundation for identity security.
 
-Identity management is a core security responsibility.
-
-Review Local Groups
+Local Groups
 Command
 Get-LocalGroup
 Output
 Administrators
-
 Users
-
 Remote Desktop Users
-
 Event Log Readers
-
 Remote Management Users
 Interpretation
 
 Local groups define permission boundaries.
 
-Understanding group membership is essential for:
+Understanding group membership supports:
 
-Least privilege implementation
+Least privilege
 Access control
-Identity security
+Identity governance
 Active Directory Readiness Validation
-Test Active Directory Module Availability
+Active Directory Command Test
 Command
 Get-ADDomain
 Output
 Get-ADDomain : The term 'Get-ADDomain' is not recognized
 Interpretation
 
-The Active Directory PowerShell module is not currently installed.
+The Active Directory PowerShell module is not installed.
 
-This confirms that:
+This confirms:
 
-Active Directory Domain Services have not yet been deployed
+Active Directory Domain Services are not deployed
 The server remains a standalone server
-Installed Windows Server Roles
+Windows Server Roles Review
 Command
 Get-WindowsFeature
 Output Summary
@@ -346,80 +341,78 @@ Windows Admin Center Setup       Installed
 Active Directory Domain Services Available
 Interpretation
 
-The server currently has foundational administration components installed.
+The server contains core administration components.
 
-Active Directory Domain Services remains available for future deployment.
+Active Directory remains available for future deployment.
 
 Event Viewer and Monitoring
-Review Recent System Events
+System Events
 Command
 Get-EventLog -LogName System -Newest 5
-Output
-Information
+Output Summary
+Service Control Manager events
 
-Service Control Manager
-Windows services entered running/stopped states.
+Services entered running and stopped states.
 Interpretation
 
-System event logs provide visibility into operating system activity.
+Windows system logs provide visibility into operating system activity.
 
-Review System Errors
+System Errors
 Command
 Get-EventLog -LogName System -EntryType Error -Newest 5
-Output
-Error
-
-EventLog
+Output Summary
+EventLog:
 Previous system shutdown was unexpected.
 
-DCOM
+DCOM:
 Event ID 10005.
 Interpretation
 
-The server contained historical administrative errors.
+Historical errors were identified.
 
-These events demonstrate the importance of:
+Event analysis is an essential skill for:
 
-Log analysis
 Troubleshooting
-Monitoring baselines
+Monitoring
+Security investigation
 Storage Validation
-Review Disk Configuration
+Disk Configuration
 Command
 Get-Disk
 Output
-Number Friendly Name
-0      VBOX HARDDISK
+Number   Friendly Name
 
-HealthStatus
+0        VBOX HARDDISK
+
+HealthStatus:
 Healthy
 
-OperationalStatus
+OperationalStatus:
 Online
 
-Total Size
+Size:
 80 GB
 Interpretation
 
-The virtual disk was confirmed operational.
+The virtual disk was validated as healthy and operational.
 
-Firewall Validation
-Review Firewall Profiles
+Windows Firewall Validation
+Firewall Profiles
 Command
 Get-NetFirewallProfile
 Output Summary
-Name     Enabled
+Name       Enabled
 
-Domain   True
+Domain     True
 
-Private  True
+Private    True
 
-Public   True
+Public     True
 Interpretation
 
 Windows Firewall profiles are enabled.
 
-Firewall configuration reduces attack surface by controlling network communication.
+Firewall controls reduce unnecessary network exposure and support system hardening.
 
 Evidence Collection
 
@@ -428,10 +421,9 @@ Evidence collected during this laboratory consists of PowerShell validation outp
 Repository structure:
 
 Evidence/
-└── Lab-2.2/
-    └── PowerShell/
+└── PowerShell/
 
-Collected evidence includes:
+Collected evidence:
 
 computerinfo.txt
 
@@ -468,63 +460,65 @@ disk.txt
 firewall-profile.txt
 Technical Findings
 
-The Windows Server 2025 environment was successfully validated as operational.
+The Windows Server 2025 environment was successfully validated.
 
 Confirmed:
 
 ✓ Server identity
 ✓ Operating system configuration
-✓ Network functionality
-✓ Administrative access
+✓ Network connectivity
 ✓ PowerShell administration capability
 ✓ Service operation
 ✓ Event logging capability
-✓ Local identity management
+✓ Local identity configuration
 ✓ Firewall protection status
 
-Security Relevance
+Operational Interpretation
 
-This laboratory established operational knowledge required for defensive administration.
+This laboratory demonstrated that Windows Server administration is a critical foundation for enterprise identity and security operations.
 
-Key security concepts demonstrated:
+The relationship between infrastructure and identity follows:
 
-Identity
+Windows Server
 
-Local users and groups define access boundaries.
+        ↓
 
-Monitoring
+Active Directory
 
-Windows Event Logs provide telemetry for:
+        ↓
 
-Security investigations
-SIEM ingestion
-Detection engineering
-Hardening
+Microsoft Entra ID
 
-Firewall profiles and service management reduce attack surface.
+        ↓
 
-Administration
+Identity Security
 
-PowerShell provides scalable and auditable system management.
+Reliable identity services require:
 
-Key Learning Outcomes
+Correct infrastructure configuration
+Effective administration
+Monitoring capability
+Security controls
+Key Learning Outcome
 
-This laboratory reinforced:
+This laboratory reinforced the importance of understanding the Windows operating system layer that supports enterprise identity platforms.
 
-Windows Server administration fundamentals
-PowerShell-based system validation
-Service troubleshooting
+Skills developed:
+
+Windows Server administration
+PowerShell validation
+Service management
 Event analysis
-Identity administration foundations
-Security-focused infrastructure management
+Local identity management
+Security-focused administration
 Skills Demonstrated
 Windows Server administration
 PowerShell administration
 Process analysis
-Service management
-Network troubleshooting
+Service troubleshooting
+Network validation
 Event log analysis
-Local identity management
+Local user and group management
 Firewall validation
 Evidence-based documentation
 Repository Context
