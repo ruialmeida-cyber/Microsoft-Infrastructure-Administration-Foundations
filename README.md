@@ -12,7 +12,7 @@ This repository documents the practical development of Microsoft infrastructure 
 
 Following the completion of the identity foundation phase, this repository expands into the infrastructure layer that supports modern Microsoft enterprise environments.
 
-The objective is to develop the practical knowledge expected of a junior Microsoft Systems Administrator while strengthening understanding of the technologies that support enterprise identity, hybrid environments, and security-aware operations.
+The objective is to develop practical knowledge of Microsoft infrastructure technologies while strengthening understanding of the systems that support enterprise identity, hybrid environments, and security-aware operations.
 
 Modern Microsoft environments are built through the interaction of:
 
@@ -49,6 +49,7 @@ The knowledge developed in this phase provides the infrastructure foundation req
 - Microsoft 365 administration
 - Azure administration
 - Identity security
+- Cloud security operations
 
 ---
 
@@ -96,7 +97,7 @@ Identity Security
 
 Oracle VirtualBox
 
-The majority of laboratories in this phase are performed using local virtual infrastructure.
+The laboratories in this phase are performed using local virtual infrastructure.
 
 This approach enables:
 
@@ -159,7 +160,7 @@ Microsoft-Infrastructure-Administration-Foundations
 
 ---
 
-# Phase 2 Laboratories
+# Phase 2 Laboratory Roadmap
 
 ## 2.1 Windows Server Administration Foundations
 
@@ -169,13 +170,13 @@ Oracle VirtualBox
 
 ## Objective
 
-Develop practical Windows Server administration skills required for Microsoft infrastructure support roles.
+Develop foundational Windows Server administration skills required for Microsoft infrastructure support roles.
 
-## Planned Areas
+## Focus Areas
 
 - Windows Server installation
 - Server roles and features
-- Administrative Tools
+- Administrative tools
 - Computer Management
 - Services management
 - Event Viewer
@@ -183,13 +184,9 @@ Develop practical Windows Server administration skills required for Microsoft in
 - Local user administration
 - System troubleshooting
 
-## Status
-
-Completed
-
 ---
 
-# 2.2 Windows Server Administration Fundamentals
+## 2.2 Windows Server Administration Fundamentals
 
 **Platform**
 
@@ -199,7 +196,7 @@ Oracle VirtualBox
 
 Develop practical Windows Server administration capability using PowerShell-based validation and troubleshooting.
 
-## Completed Areas
+## Focus Areas
 
 - Windows Server system validation
 - PowerShell administration
@@ -208,18 +205,14 @@ Develop practical Windows Server administration capability using PowerShell-base
 - Network configuration validation
 - Connectivity testing
 - Local users and groups
-- Windows features inspection
+- Windows feature inspection
 - Event Log analysis
 - Firewall validation
 - Active Directory readiness assessment
 
-## Status
-
-Completed
-
 ---
 
-# 2.3 Active Directory Administration Fundamentals
+## 2.3 Active Directory Administration Fundamentals
 
 **Platform**
 
@@ -229,7 +222,7 @@ Oracle VirtualBox
 
 Develop practical administration skills using Active Directory Domain Services (AD DS).
 
-## Completed Areas
+## Focus Areas
 
 - Active Directory Domain Services installation
 - Domain Controller deployment
@@ -239,15 +232,9 @@ Develop practical administration skills using Active Directory Domain Services (
 - Domain Controller validation
 - FSMO role validation
 - Active Directory services validation
-- DNS service record validation
+- DNS service discovery
 - User and group administration fundamentals
 - Security event validation
-
-## Status
-
-Completed
-
----
 
 # 2.4 PowerShell Administration Fundamentals
 
@@ -259,7 +246,7 @@ Oracle VirtualBox
 
 Develop practical PowerShell administration capability for enterprise Microsoft environments.
 
-## Planned Areas
+## Focus Areas
 
 - PowerShell navigation
 - Cmdlets
@@ -270,10 +257,6 @@ Develop practical PowerShell administration capability for enterprise Microsoft 
 - Basic scripting
 - Administrative automation
 - Reusable administration workflows
-
-## Status
-
-Planned
 
 ---
 
@@ -287,7 +270,7 @@ Oracle VirtualBox
 
 Develop practical understanding of Windows Server security administration.
 
-## Planned Areas
+## Focus Areas
 
 - Windows Defender Firewall
 - Windows Security
@@ -297,10 +280,6 @@ Develop practical understanding of Windows Server security administration.
 - Security auditing
 - Administrative troubleshooting
 - Security hardening principles
-
-## Status
-
-Planned
 
 ---
 
@@ -346,8 +325,8 @@ Document:
 
 - Commands
 - PowerShell outputs
-- Screenshots where appropriate
 - Configuration results
+- Technical findings
 
 ## Documentation
 
@@ -363,21 +342,21 @@ Record:
 
 This repository follows an evidence-based administration methodology.
 
-Each laboratory aims to demonstrate:
+Each laboratory demonstrates:
 
 - What was configured
 - Why the configuration was required
 - How success was validated
 - What technical conclusions were reached
 
-PowerShell is prioritised because it provides:
+PowerShell is prioritised throughout the laboratories because it provides:
 
 - Repeatable administration
-- Auditable changes
 - Structured evidence collection
+- Auditable workflows
 - Automation potential
 
-This reflects modern Microsoft administration practices.
+This reflects modern Microsoft infrastructure administration practices.
 
 ---
 
@@ -385,7 +364,7 @@ This reflects modern Microsoft administration practices.
 
 This repository supports progression towards:
 
-## Junior Microsoft Systems Administrator
+## Microsoft Systems Administration
 
 with practical development across:
 
@@ -473,21 +452,35 @@ This repository follows several principles:
 
 ---
 
-# Repository Status
+# Repository Evolution
 
-**Active Development**
+This repository is designed as a long-term technical portfolio.
 
-Completed laboratories:
+The root repository provides the overall learning roadmap.
 
-- 2.1 Windows Server Administration Foundations
-- 2.2 Windows Server Administration Fundamentals
-- 2.3 Active Directory Administration Fundamentals
+Individual laboratory folders contain:
 
-Future laboratories:
+- Detailed implementation steps
+- PowerShell evidence
+- Validation results
+- Technical findings
+- Lessons learned
 
-- 2.4 PowerShell Administration Fundamentals
-- 2.5 Windows Server Security Fundamentals
+This structure allows the portfolio to expand while maintaining a clear and stable technical narrative.
 
-New laboratories will be added progressively as practical Microsoft infrastructure administration skills develop.
+---
+
+# Conclusion
+
+This repository documents the development of Microsoft infrastructure administration skills through practical laboratory exercises.
 
 The objective is to build a complete understanding of how Microsoft enterprise environments are deployed, administered, integrated, and secured.
+
+The knowledge developed throughout this phase provides the foundation required for:
+
+- Windows Server administration
+- Active Directory management
+- Hybrid identity environments
+- Microsoft Azure administration
+- Identity security
+- Cloud security operations
