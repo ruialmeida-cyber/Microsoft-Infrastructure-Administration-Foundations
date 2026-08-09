@@ -1,4 +1,4 @@
-# 2.4 2.4-Active-Directory-User-Administration-Fundamentals
+# 2.4 Active Directory User Administration Fundamentals
 
 **Status:** Completed
 
