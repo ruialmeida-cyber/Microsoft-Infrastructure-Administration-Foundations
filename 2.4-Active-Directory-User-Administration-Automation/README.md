@@ -12,15 +12,16 @@
 
 # Overview
 
-This laboratory extends the Active Directory administration work from Lab 2.3 into PowerShell-based administration and automation.
+This laboratory extends the Active Directory administration work from Lab 2.3 into PowerShell-based user administration and controlled automation.
 
-The objective was to demonstrate how common Active Directory administrative tasks can be performed manually with PowerShell, then converted into a repeatable automation workflow with built-in validation.
+The objective was to demonstrate how common Active Directory user-management tasks can be performed manually with PowerShell and then translated into a repeatable automation workflow with built-in validation.
 
 The laboratory focuses on:
 
 * PowerShell administration
 * Active Directory user management
-* Password and account-state management
+* Password management
+* Account-state management
 * Conditional logic
 * Error handling
 * Secure password input
@@ -181,26 +182,25 @@ The account was used to demonstrate individual Active Directory administration o
 
 # Password Reset
 
-The account password was reset using:
+The account password was reset using PowerShell.
+
+The password was entered interactively rather than being written into the command or repository.
+
+Command:
 
 ```powershell
-Set-ADAccountPassword -Identity labuser01 -Reset
+Set-ADAccountPassword -Identity labuser01
 ```
-
-The password was entered interactively.
 
 An initial password attempt failed because it did not meet the domain password requirements.
 
-PowerShell returned:
+PowerShell returned an error indicating that the password did not satisfy the configured domain requirements for length, complexity, or password history.
 
-```text
-Set-ADAccountPassword : The password does not meet the length,
-complexity, or history requirement of the domain.
-```
-
-This demonstrated that Active Directory domain password policy was being enforced.
+This demonstrated that the Active Directory domain password policy was being enforced.
 
 A compliant password was subsequently accepted.
+
+Passwords are deliberately excluded from this repository.
 
 ---
 
@@ -259,7 +259,7 @@ Lab User01  True                    True
 
 Interpretation:
 
-The account was enabled but the password was marked as expired, requiring the user to change it at logon.
+The account remained enabled, while the password state indicated that a password change was required at the next logon.
 
 ---
 
@@ -285,7 +285,7 @@ Output:
 ```text
 Name        Enabled
 ----        -------
-Lab User01 False
+Lab User01  False
 ```
 
 This confirmed successful account disablement.
@@ -304,11 +304,11 @@ However, repeating the same workflow across many identities would introduce:
 * difficulty maintaining consistent validation
 * reduced scalability
 
-PowerShell automation provides a way to encode the administrative process into a repeatable workflow.
+PowerShell automation provides a way to encode administrative logic into a repeatable workflow.
 
 The objective is therefore not simply to execute commands faster.
 
-The objective is to make the administrative logic:
+The objective is to make the administrative process:
 
 * repeatable
 * predictable
@@ -374,9 +374,11 @@ Perform independent final validation
 Report PASS / FAIL
 ```
 
-This represents a basic infrastructure-as-code principle:
+The workflow demonstrates a state-based administrative automation principle:
 
 > Define the expected state, perform the change, and verify the resulting state.
+
+This is configuration and administrative automation rather than a claim that the script itself constitutes a complete infrastructure-as-code implementation.
 
 ---
 
@@ -595,7 +597,7 @@ C:\Lab-2.4-User-Automation.ps1
 
 The password was entered interactively when requested.
 
-The password was not written into the PowerShell script.
+The password was not written into the PowerShell script or repository documentation.
 
 ---
 
@@ -641,21 +643,15 @@ Disable operation validated successfully.
 Enable operation validated successfully.
 
 [9] Performing final account validation...
-```
 
-The automation therefore successfully demonstrated:
-
-* domain validation
-* account existence checking
-* account creation
-* initial state validation
-* account disablement
-* disabled-state validation
-* account re-enablement
-* enabled-state validation
-* final state validation
-
----
+Name                 : Lab Automation User01
+SamAccountName       : labauto01
+UserPrincipalName    : labauto01@corp.lab
+Enabled              : True
+PasswordLastSet      :
+PasswordExpired      : True
+PasswordNeverExpires : False
+Description          : Lab 2.4 PowerShell automation test account
 
 # Independent Account Validation
 
@@ -692,11 +688,13 @@ The account was:
 * not configured with a non-expiring password
 * correctly associated with the automation laboratory
 
+This independent query provided a second validation path outside the automation script itself.
+
 ---
 
 # PowerShell Syntax Validation
 
-The saved script was also checked using the PowerShell language parser.
+The saved automation script was checked using the PowerShell language parser.
 
 Command:
 
@@ -724,55 +722,70 @@ Result:
 SYNTAX TEST PASSED: No PowerShell parsing errors detected.
 ```
 
-This confirmed that the saved PowerShell script contained no PowerShell parsing errors.
+This confirmed that the saved `.ps1` file contained no PowerShell parsing errors.
 
-> Note: An `else` error was encountered while manually entering an `if`/`else` block at the interactive PowerShell prompt. This occurred because the two blocks were entered as separate commands. It was not a parsing error in the saved `.ps1` file.
+## Interactive Prompt Test
 
-The saved script itself passed the parser validation.
+During validation, an `else` error was encountered while manually entering an `if`/`else` construct at the interactive PowerShell prompt.
+
+The command was entered as separate interactive submissions, resulting in:
+
+```text
+else : The term 'else' is not recognized as the name of a cmdlet,
+function, script file, or operable program.
+```
+
+This was an interactive command-entry issue and **not a parsing error in the saved PowerShell script**.
+
+The saved script itself passed the PowerShell parser validation shown above.
 
 ---
 
 # Automation Safety Controls
 
-The automation contains several safeguards.
+The automation contains several safeguards designed to reduce unintended changes.
 
 ## Domain Validation
 
-The script verifies that the expected domain is:
+The script verifies that the expected Active Directory domain is:
 
 ```text
 corp.lab
 ```
 
-If another domain is detected, the script stops.
+If another domain is detected, the script stops execution.
+
+```powershell
+if ($DomainInfo.DNSRoot -ne "corp.lab") {
+    throw "Unexpected domain detected: $($DomainInfo.DNSRoot)"
+}
+```
+
+This prevents the script from continuing against an unexpected Active Directory environment.
 
 ---
 
 ## Existing Account Protection
 
-The script checks whether:
-
-```text
-labauto01
-```
-
-already exists.
-
-If it does, the script stops:
+The script checks whether the target account already exists.
 
 ```powershell
+$ExistingUser = Get-ADUser -Filter "SamAccountName -eq '$Username'"
+
 if ($ExistingUser) {
     throw "Account '$Username' already exists. Script stopped to prevent unintended modification."
 }
 ```
 
-This prevents the script from blindly modifying an existing account.
+If `labauto01` already exists, the script stops instead of modifying the existing identity.
+
+This is an important safety control when developing administrative automation.
 
 ---
 
 ## Secure Password Input
 
-The password is collected with:
+The password is collected interactively using:
 
 ```powershell
 $Password = Read-Host "Password" -AsSecureString
@@ -780,7 +793,7 @@ $Password = Read-Host "Password" -AsSecureString
 
 The password is therefore not hard-coded into the script.
 
-Passwords are deliberately excluded from repository documentation.
+Passwords are deliberately excluded from repository documentation and evidence.
 
 ---
 
@@ -792,13 +805,29 @@ Active Directory operations use:
 -ErrorAction Stop
 ```
 
-This prevents the script from silently continuing after an operation fails.
+This ensures that terminating errors stop the workflow rather than allowing subsequent operations to continue against an unexpected state.
+
+For example:
+
+```powershell
+New-ADUser `
+    -Name $Name `
+    -SamAccountName $Username `
+    -UserPrincipalName "$Username@$Domain" `
+    -AccountPassword $Password `
+    -Enabled $true `
+    -ChangePasswordAtLogon $true `
+    -Description $Description `
+    -ErrorAction Stop
+```
+
+This creates a clear failure boundary around the account-creation operation.
 
 ---
 
 ## Post-Operation Validation
 
-The script validates the result of administrative actions rather than assuming success.
+The automation validates the result of administrative actions rather than assuming that successful command execution automatically means the desired state was achieved.
 
 For example:
 
@@ -820,6 +849,8 @@ Retrieve Account
 Check Enabled = True
 ```
 
+This distinction between **action success** and **state validation** is important in administrative automation.
+
 ---
 
 # Manual Administration Versus Automation
@@ -838,7 +869,7 @@ Validation
 Next command
 ```
 
-The automated workflow encodes the same logic into a repeatable process:
+The automated workflow encoded the same administrative logic into a repeatable process:
 
 ```text
 PowerShell Script
@@ -854,9 +885,17 @@ Next action
 Final validation
 ```
 
-The main advantage is therefore not simply speed.
+The primary advantage is therefore not simply speed.
 
 Automation provides a mechanism for applying the same administrative logic repeatedly and consistently.
+
+However, automation also increases potential impact.
+
+A manual mistake may affect one identity.
+
+A poorly designed automation process may affect many identities.
+
+Therefore, increased automation should be accompanied by stronger validation, controlled testing and clear failure conditions.
 
 ---
 
@@ -864,25 +903,25 @@ Automation provides a mechanism for applying the same administrative logic repea
 
 The existing account `labuser01` had already been used for manual administration.
 
-A separate account, `labauto01`, was therefore created for automation testing.
+A separate account, `labauto01`, was therefore used for automation testing.
 
-This provided a controlled test target and prevented the automation workflow from accidentally changing the state of the previously configured account.
+This provided a controlled test target and prevented the automation workflow from unnecessarily changing the state of the previously configured account.
 
-The approach demonstrates a basic principle used in professional infrastructure administration:
+The approach demonstrates a basic controlled-testing methodology:
 
 ```text
-Test environment
-      ↓
-Controlled identity
-      ↓
-Validate automation
-      ↓
-Review results
-      ↓
-Controlled deployment
+Dedicated test identity
+        ↓
+Execute automation
+        ↓
+Validate results
+        ↓
+Review final state
+        ↓
+Only then consider broader use
 ```
 
-Production identities should not be treated as the first test target for a new automation workflow.
+New automation should be validated against a dedicated test identity or controlled test environment before being applied to production identities.
 
 ---
 
@@ -906,7 +945,7 @@ Repetition becomes expensive
 Automation becomes increasingly important
 ```
 
-In enterprise environments, PowerShell can be combined with:
+In enterprise environments, PowerShell automation can be combined with:
 
 * identity management systems
 * HR-driven provisioning
@@ -918,13 +957,16 @@ In enterprise environments, PowerShell can be combined with:
 * logging
 * SIEM platforms
 
-The important security consideration is that automation increases both efficiency and potential impact.
+The security consideration is that automation increases both efficiency and potential impact.
 
-A manual error may affect one account.
+The larger the scope of an automated operation, the more important it becomes to establish:
 
-A poorly designed automation process may affect many accounts.
-
-Therefore automation requires stronger validation rather than less validation.
+* clear preconditions
+* restricted scope
+* validation
+* error handling
+* auditability
+* controlled testing
 
 ---
 
@@ -932,7 +974,7 @@ Therefore automation requires stronger validation rather than less validation.
 
 PowerShell automation is directly relevant to identity and security operations.
 
-The same concepts demonstrated here can be extended to:
+The same administrative concepts demonstrated here can be extended to:
 
 * user provisioning
 * user deprovisioning
@@ -959,6 +1001,8 @@ Error handling
 =
 Safer administration
 ```
+
+This methodology is particularly relevant to identity-focused security work because identity changes can directly affect authentication and authorisation.
 
 ---
 
@@ -989,13 +1033,13 @@ This laboratory demonstrated:
 The laboratory is intentionally kept minimal.
 
 ```text
-2.4-PowerShell-Administration-Fundamentals
+2.4-Active-Directory-User-Administration-Fundamentals
 └── README.md
 ```
 
 No separate evidence directory is required.
 
-PowerShell commands, scripts, validation results and relevant outputs are contained directly within this README.
+PowerShell commands, automation code, validation results and relevant outputs are contained directly within this README.
 
 Passwords and other credentials are deliberately excluded.
 
@@ -1003,22 +1047,30 @@ Passwords and other credentials are deliberately excluded.
 
 # Technical Findings
 
-The laboratory demonstrated that Active Directory administration performed manually can be translated into a controlled PowerShell automation workflow.
+The laboratory demonstrated that Active Directory user administration performed manually can be translated into a controlled PowerShell automation workflow.
 
-The automation successfully:
+The manual administration phase successfully demonstrated:
 
-* validated the Active Directory domain
-* checked for an existing target account
-* prevented modification of an existing target account
-* securely requested a password
-* created an Active Directory user
-* validated the resulting account
-* disabled the account
-* validated the disabled state
-* re-enabled the account
-* validated the enabled state
-* independently verified the final state
-* passed PowerShell syntax validation
+* Active Directory user password administration
+* Domain password-policy enforcement
+* Password-change requirements
+* Account disablement
+* Account-state validation
+
+The automation phase successfully demonstrated:
+
+* Active Directory domain validation
+* Target-account existence checking
+* Protection against modification of an existing target account
+* Secure password input
+* Active Directory user creation
+* Initial account-state validation
+* Account disablement
+* Disabled-state validation
+* Account re-enablement
+* Enabled-state validation
+* Independent final-state verification
+* PowerShell syntax validation
 
 The final independently verified account state was:
 
@@ -1028,15 +1080,17 @@ PasswordExpired      : True
 PasswordNeverExpires : False
 ```
 
+The laboratory therefore demonstrated both **manual identity administration** and **controlled administrative automation**.
+
 ---
 
 # Conclusion
 
-This laboratory extended the Active Directory administration work from manual PowerShell commands into controlled automation.
+This laboratory extended the Active Directory administration work from Lab 2.3 into Active Directory user administration and controlled PowerShell automation.
 
 The key lesson was that effective automation is not simply a collection of commands executed automatically.
 
-A robust administrative script should define:
+A robust administrative workflow should define:
 
 ```text
 What must be true before execution
@@ -1064,7 +1118,7 @@ The concepts demonstrated here can later be extended to:
 * security remediation
 * detection and response workflows
 
-This laboratory therefore provides a practical bridge between traditional Windows Server administration and modern automation-oriented identity and security engineering.
+This laboratory provides a practical bridge between traditional Windows Server administration and modern automation-oriented identity and security engineering.
 
 ---
 
@@ -1089,14 +1143,14 @@ Learning progression:
 
         ↓
 
-2.4 PowerShell Administration Fundamentals
+2.4 Active Directory User Administration Fundamentals
 
         ↓
 
 2.5 Windows Server Security Fundamentals
 ```
 
-The phase develops infrastructure knowledge supporting:
+This phase develops infrastructure knowledge supporting:
 
 * Microsoft Systems Administration
 * Hybrid Identity
@@ -1104,3 +1158,6 @@ The phase develops infrastructure knowledge supporting:
 * Azure Administration
 * Identity Security
 * Detection Engineering
+
+
+
